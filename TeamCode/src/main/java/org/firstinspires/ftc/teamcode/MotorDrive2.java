@@ -5,17 +5,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="Basic Omni Drive", group="TeleOp")
+@TeleOp(name="Basic Omni Drive")//, group="TeleOp")
 public class MotorDrive2 extends LinearOpMode {
     @Override
     public void runOpMode() {
-
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        DcMotor frontLeftDrive = hardwareMap.get(DcMotor.class, "port2");
-        DcMotor backLeftDrive = hardwareMap.get(DcMotor.class, "port3");
+        DcMotor frontLeftDrive = hardwareMap.get(DcMotor.class, "port0");
+        DcMotor backLeftDrive = hardwareMap.get(DcMotor.class, "port2");
         DcMotor frontRightDrive = hardwareMap.get(DcMotor.class, "port1");
-        DcMotor backRightDrive = hardwareMap.get(DcMotor.class, "port0");
+        DcMotor backRightDrive = hardwareMap.get(DcMotor.class, "port3");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!

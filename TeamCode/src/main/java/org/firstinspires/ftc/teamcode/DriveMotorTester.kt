@@ -24,7 +24,6 @@ class DriveMotorTester : LinearOpMode() {
         frontRight.direction = DcMotorSimple.Direction.FORWARD
 
         waitForStart()
-
         while (opModeIsActive()) {
             if (gamepad1.left_bumper) {
                 frontLeft.power = 0.5
