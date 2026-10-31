@@ -46,10 +46,10 @@ public class Operate {
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
                 s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2200);
+                s.setVelocity(-2350);
             } else if (gamepad.a) {
                 s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2600);
+                s.setVelocity(-2650);
 
             } else {
                 s.setPower(0);
