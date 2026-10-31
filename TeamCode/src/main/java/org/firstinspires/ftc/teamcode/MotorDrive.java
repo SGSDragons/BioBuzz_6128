@@ -1,26 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-//import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.pedro.Constants;
-
-@TeleOp(name="Robot Driving")
 public class MotorDrive extends LinearOpMode {
-    @Override
     public void runOpMode() {
-        Follower follower = Constants.create(hardwareMap);
+
+        DcMotor leftFront  = hardwareMap.get(DcMotor.class, "port0");
+        DcMotor rightFront = hardwareMap.get(DcMotor.class, "port1");
+        DcMotor leftBack= hardwareMap.get(DcMotor.class, "port2");
+        DcMotor rightBack = hardwareMap.get(DcMotor.class, "port3");
 
         waitForStart();
-        while (opModeIsActive()) {
-            double forward = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x;
-            double turn = gamepad1.right_stick_x;
-            follower.manual(forward, lateral, turn);
-            follower.update();
-        }
-    }
 
+        while (opModeIsActive()) {
+            final double forwardPower = gamepad1.left_stick_y;
+            leftFront.setPower(forwardPower);
+            leftBack.setPower(forwardPower);
+            rightFront.setPower(forwardPower);
+            rightBack.setPower(forwardPower);
+        }
+
+    }
 }

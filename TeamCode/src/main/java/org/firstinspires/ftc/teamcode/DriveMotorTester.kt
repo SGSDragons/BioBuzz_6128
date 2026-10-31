@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode
 
-import com.bylazar.telemetry.PanelsTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -40,12 +39,6 @@ class DriveMotorTester : LinearOpMode() {
             backRight.power = gamepad1.right_trigger.toDouble()/2
 
             backLeft.power = gamepad1.left_trigger.toDouble()/2
-
-            PanelsTelemetry.telemetry.addData("exp 0/perpendicular pos", backRight.currentPosition) //port 0 is perpendicular
-            PanelsTelemetry.telemetry.addData("exp 1/left pos", backLeft.currentPosition) //port 1 is left parallel
-           // PanelsTelemetry.telemetry.addData("Port 2 pos", frontLeft.currentPosition)
-            PanelsTelemetry.telemetry.addData("Port 3/right pos", rightOdomWheel.currentPosition)
-            PanelsTelemetry.telemetry.update()
         }
     }
 }
