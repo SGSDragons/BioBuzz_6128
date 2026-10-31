@@ -47,6 +47,10 @@ public class Operate {
             if (gamepad.b) {
                 s.setVelocityPIDFCoefficients(20, 0, 0, 0);
                 s.setVelocity(-2200);
+            } else if (gamepad.a) {
+                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
+                s.setVelocity(-2600);
+
             } else {
                 s.setPower(0);
             }
