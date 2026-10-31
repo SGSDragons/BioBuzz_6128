@@ -44,4 +44,5 @@ public class Shootty extends OpMode {
             output.setPower(1);
         }
     }
+
 }

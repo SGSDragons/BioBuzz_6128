@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
 @Config
+
 public class Operate {
 
     public static double flyWheelSpeed;
@@ -31,6 +34,8 @@ public class Operate {
         this.shooters = List.of(
                 hardwareMap.get(DcMotorEx.class, "exp2"),
                 hardwareMap.get(DcMotorEx.class, "exp3"));
+        this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.output.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void update() {
@@ -40,8 +45,8 @@ public class Operate {
 
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
-                s.setVelocityPIDFCoefficients(kP, kI, kD, kF);
-                s.setVelocity(flyWheelSpeed);
+                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
+                s.setVelocity(-2200);
             } else {
                 s.setPower(0);
             }

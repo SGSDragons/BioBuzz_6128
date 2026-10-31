@@ -11,16 +11,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 class DriveMotorTester : LinearOpMode() {
     @Throws(InterruptedException::class)
     override fun runOpMode() {
-        val frontLeft = hardwareMap.get(DcMotorEx::class.java, "exp2")
-        val frontRight = hardwareMap.get(DcMotorEx::class.java, "exp3")
-        val backLeft = hardwareMap.get(DcMotorEx::class.java, "exp1")
-        val backRight = hardwareMap.get(DcMotorEx::class.java, "exp0")
-        val rightOdomWheel = hardwareMap.get(DcMotorEx::class.java, "port3")
+        val frontRight = hardwareMap.get(DcMotorEx::class.java, "port1")
+        val backLeft = hardwareMap.get(DcMotorEx::class.java, "port2")
+        val backRight = hardwareMap.get(DcMotorEx::class.java, "port3")
+        val frontLeft = hardwareMap.get(DcMotorEx::class.java, "port0")
 
-        frontRight.direction = DcMotorSimple.Direction.FORWARD
-        backRight.direction = DcMotorSimple.Direction.FORWARD
-        frontLeft.direction = DcMotorSimple.Direction.REVERSE
-        frontRight.direction = DcMotorSimple.Direction.FORWARD
+        frontRight.direction = DcMotorSimple.Direction.REVERSE
+        backRight.direction = DcMotorSimple.Direction.REVERSE
+        frontLeft.direction = DcMotorSimple.Direction.FORWARD
+        backLeft.direction = DcMotorSimple.Direction.FORWARD
 
         waitForStart()
         while (opModeIsActive()) {

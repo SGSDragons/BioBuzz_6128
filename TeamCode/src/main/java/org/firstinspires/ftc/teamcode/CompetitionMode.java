@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-public class TeleOp extends OpMode {
+@TeleOp(name="Competition driving")
+public class CompetitionMode extends OpMode {
     private Drive drive;
     private Operate operate;
 

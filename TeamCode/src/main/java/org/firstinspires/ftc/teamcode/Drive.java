@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -18,6 +19,10 @@ public class Drive {
         this.backLeftDrive = hardwareMap.get(DcMotor.class, "port2");
         this.frontRightDrive = hardwareMap.get(DcMotor.class, "port1");
         this.backRightDrive = hardwareMap.get(DcMotor.class, "port3");
+        this.frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void update() {
@@ -43,12 +48,12 @@ public class Drive {
         max = Math.max(max, Math.abs(backLeftPower));
         max = Math.max(max, Math.abs(backRightPower));
 
-        if (max > 1.0) {
-            frontLeftPower  /= max;
-            frontRightPower /= max;
-            backLeftPower   /= max;
-            backRightPower  /= max;
-        }
+
+        frontLeftPower  *= 0.7;
+        frontRightPower *= 0.7;
+        backLeftPower   *= 0.7;
+        backRightPower  *= 0.7;
+
 
         // Send calculated power to wheels
         frontLeftDrive.setPower(frontLeftPower);
