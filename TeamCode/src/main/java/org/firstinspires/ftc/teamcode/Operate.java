@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -62,6 +61,27 @@ public class Operate {
         if (gamepad.right_bumper){
             output.setPower(outputPower);
         }
+    }
 
+    public void shoot(double mode) {
+        for (DcMotorEx s : shooters) {
+            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
+            if (mode == 1) {
+                s.setVelocity(-2350);
+            }
+            else if (mode == 2){
+                s.setVelocity(-2650);
+            }
+            else {
+                s.setPower(0);
+            }
+        }
+    }
+    public void ballDrive(double ison){
+        if (ison==1){
+            output.setPower(1);
+        } else if (ison==0){
+            output.setPower(0);
+        }
     }
 }
