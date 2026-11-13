@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -8,11 +12,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
+import kotlin.ResultKt;
+
 @Config
 
 public class Operate {
 
-    public static double flyWheelSpeed;
+    public static double flyWheelSpeed=2200;
+    public static double flyWheelSpeed2=3000;
     public static double kF;
     public static double kP;
     public static double kI;
@@ -33,9 +40,12 @@ public class Operate {
         this.shooters = List.of(
                 hardwareMap.get(DcMotorEx.class, "exp2"),
                 hardwareMap.get(DcMotorEx.class, "exp3"));
-        this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.shooters.get(1).setDirection(DcMotorSimple.Direction.REVERSE);
+        this.intake.setDirection(DcMotorSimple.Direction.FORWARD);
         this.output.setDirection(DcMotorSimple.Direction.FORWARD);
+
     }
+
 
     public void update() {
 
@@ -45,10 +55,10 @@ public class Operate {
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
                 s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2350);
+                s.setVelocity(-flyWheelSpeed);
             } else if (gamepad.a) {
                 s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2650);
+                s.setVelocity(-flyWheelSpeed2);
 
             } else {
                 s.setPower(0);
@@ -61,6 +71,13 @@ public class Operate {
         if (gamepad.right_bumper){
             output.setPower(outputPower);
         }
+        TelemetryPacket p1=new TelemetryPacket();
+        TelemetryPacket p2=new TelemetryPacket();
+        p1.put("shooter 0", shooters.get(0).getVelocity());
+        p2.put("shooter 1", shooters.get(1).getVelocity());
+        FtcDashboard.getInstance().sendTelemetryPacket(p1);
+        FtcDashboard.getInstance().sendTelemetryPacket(p2);
+
     }
 
     public void shoot(double mode) {
