@@ -23,7 +23,7 @@ public class automodeComp extends OpMode {
     @Override
     public void loop() {
         if (step==0){
-            operator.shoot(2);
+            operator.shoot(Operate.Mode.POLLEN);
             if (runtime.seconds()>=0.5){
                 step++;
 
@@ -33,7 +33,7 @@ public class automodeComp extends OpMode {
             if (runtime.seconds()>=2){
                 step++;
                 operator.ballDrive(0);
-                operator.shoot(0);
+                operator.shoot(Operate.Mode.NECTAR);
             }
         }
 

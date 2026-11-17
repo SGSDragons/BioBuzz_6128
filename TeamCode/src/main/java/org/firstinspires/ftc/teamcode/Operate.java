@@ -12,12 +12,6 @@ import java.util.List;
 
 public class Operate {
 
-    public static double flyWheelSpeed;
-    public static double kF;
-    public static double kP;
-    public static double kI;
-    public static double kD;
-
     public static double intakePower = 1.0;
     public static double outputPower = 1.0;
 
@@ -33,47 +27,55 @@ public class Operate {
         this.shooters = List.of(
                 hardwareMap.get(DcMotorEx.class, "exp2"),
                 hardwareMap.get(DcMotorEx.class, "exp3"));
+        this.shooters.get(0).setDirection(DcMotorSimple.Direction.REVERSE);
         this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
-        this.output.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.output.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        for (DcMotorEx s : shooters) {
+            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
+        }
     }
 
     public void update() {
 
-        intake.setPower(-gamepad.left_trigger);
-        output.setPower(-gamepad.right_trigger);
-
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
-                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2350);
+                shoot(Mode.NECTAR);
             } else if (gamepad.a) {
-                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-2650);
+                shoot(Mode.POLLEN);
 
             } else {
                 s.setPower(0);
             }
         }
 
+        // Pull in with positive power. Eject with negative
+        intake.setPower(gamepad.left_trigger);
         if (gamepad.left_bumper){
-            intake.setPower(intakePower);
+            intake.setPower(-intakePower);
         }
+
+        output.setPower(gamepad.right_trigger);
         if (gamepad.right_bumper){
-            output.setPower(outputPower);
+            output.setPower(-outputPower);
         }
     }
 
-    public void shoot(double mode) {
+    public enum Mode {
+        OFF(0),
+        POLLEN(2350),
+        NECTAR(3550);
+
+        final int speed;
+        Mode(int speed) { this.speed = speed; }
+    }
+
+    public void shoot(Mode mode) {
         for (DcMotorEx s : shooters) {
-            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-            if (mode == 1) {
-                s.setVelocity(-2350);
-            }
-            else if (mode == 2){
-                s.setVelocity(-2650);
-            }
-            else {
-                s.setPower(0);
+            switch (mode) {
+                case POLLEN: s.setVelocity(2350); break;
+                case NECTAR: s.setVelocity(3550); break;
+                default: s.setPower(0.0);
             }
         }
     }
