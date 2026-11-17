@@ -16,8 +16,8 @@ import java.util.List;
 
 public class Operate {
 
-    public static double flyWheelSpeed;
-    public static double flyWheelSpeed2;
+    public static double pollenSpeed = 2350;
+    public static double nectarSpeed = 3550;
     public static double kF;
     public static double kP;
     public static double kI;
@@ -95,8 +95,8 @@ public class Operate {
     public void shoot(Mode mode) {
         for (DcMotorEx s : shooters) {
             switch (mode) {
-                case POLLEN: s.setVelocity(2350); break;
-                case NECTAR: s.setVelocity(3550); break;
+                case POLLEN: s.setVelocity(pollenSpeed); break;
+                case NECTAR: s.setVelocity(nectarSpeed); break;
                 default: s.setPower(0.0);
             }
         }
