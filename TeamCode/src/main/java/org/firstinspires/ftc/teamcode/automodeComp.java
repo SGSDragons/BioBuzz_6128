@@ -26,12 +26,14 @@ public class automodeComp extends OpMode {
             operator.shoot(Operate.Mode.POLLEN);
             if (runtime.seconds()>=0.5){
                 step++;
+                runtime.reset();
 
             }
         } else if (step==1){
             operator.ballDrive(1);
             if (runtime.seconds()>=2){
                 step++;
+                runtime.reset();
                 operator.ballDrive(0);
                 operator.shoot(Operate.Mode.NECTAR);
             }

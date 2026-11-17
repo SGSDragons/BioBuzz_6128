@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -11,6 +15,13 @@ import java.util.List;
 @Config
 
 public class Operate {
+
+    public static double flyWheelSpeed;
+    public static double flyWheelSpeed2;
+    public static double kF;
+    public static double kP;
+    public static double kI;
+    public static double kD;
 
     public static double intakePower = 1.0;
     public static double outputPower = 1.0;
@@ -38,6 +49,9 @@ public class Operate {
 
     public void update() {
 
+        intake.setPower(-gamepad.left_trigger);
+        output.setPower(-gamepad.right_trigger);
+
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
                 shoot(Mode.NECTAR);
@@ -59,6 +73,14 @@ public class Operate {
         if (gamepad.right_bumper){
             output.setPower(-outputPower);
         }
+
+        TelemetryPacket p1=new TelemetryPacket();
+        TelemetryPacket p2=new TelemetryPacket();
+        p1.put("shooter 0", shooters.get(0).getVelocity());
+        p2.put("shooter 1", shooters.get(1).getVelocity());
+        FtcDashboard.getInstance().sendTelemetryPacket(p1);
+        FtcDashboard.getInstance().sendTelemetryPacket(p2);
+
     }
 
     public enum Mode {
