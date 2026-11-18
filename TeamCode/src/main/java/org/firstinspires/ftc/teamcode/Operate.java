@@ -12,14 +12,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
-import kotlin.ResultKt;
-
 @Config
 
 public class Operate {
 
-    public static double flyWheelSpeed=2200;
-    public static double flyWheelSpeed2=3000;
+    public static double pollenSpeed = 2350;
+    public static double nectarSpeed = 3550;
     public static double kF;
     public static double kP;
     public static double kI;
@@ -40,12 +38,14 @@ public class Operate {
         this.shooters = List.of(
                 hardwareMap.get(DcMotorEx.class, "exp2"),
                 hardwareMap.get(DcMotorEx.class, "exp3"));
-        this.shooters.get(1).setDirection(DcMotorSimple.Direction.REVERSE);
-        this.intake.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.output.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.shooters.get(0).setDirection(DcMotorSimple.Direction.REVERSE);
+        this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.output.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        for (DcMotorEx s : shooters) {
+            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
+        }
     }
-
 
     public void update() {
 
@@ -54,23 +54,26 @@ public class Operate {
 
         for (DcMotorEx s : shooters) {
             if (gamepad.b) {
-                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-flyWheelSpeed);
+                shoot(Mode.NECTAR);
             } else if (gamepad.a) {
-                s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-                s.setVelocity(-flyWheelSpeed2);
+                shoot(Mode.POLLEN);
 
             } else {
                 s.setPower(0);
             }
         }
 
+        // Pull in with positive power. Eject with negative
+        intake.setPower(gamepad.left_trigger);
         if (gamepad.left_bumper){
-            intake.setPower(intakePower);
+            intake.setPower(-intakePower);
         }
+
+        output.setPower(gamepad.right_trigger);
         if (gamepad.right_bumper){
-            output.setPower(outputPower);
+            output.setPower(-outputPower);
         }
+
         TelemetryPacket p1=new TelemetryPacket();
         TelemetryPacket p2=new TelemetryPacket();
         p1.put("shooter 0", shooters.get(0).getVelocity());
@@ -80,17 +83,21 @@ public class Operate {
 
     }
 
-    public void shoot(double mode) {
+    public enum Mode {
+        OFF(0),
+        POLLEN(2350),
+        NECTAR(3550);
+
+        final int speed;
+        Mode(int speed) { this.speed = speed; }
+    }
+
+    public void shoot(Mode mode) {
         for (DcMotorEx s : shooters) {
-            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-            if (mode == 1) {
-                s.setVelocity(-2350);
-            }
-            else if (mode == 2){
-                s.setVelocity(-2650);
-            }
-            else {
-                s.setPower(0);
+            switch (mode) {
+                case POLLEN: s.setVelocity(pollenSpeed); break;
+                case NECTAR: s.setVelocity(nectarSpeed); break;
+                default: s.setPower(0.0);
             }
         }
     }
