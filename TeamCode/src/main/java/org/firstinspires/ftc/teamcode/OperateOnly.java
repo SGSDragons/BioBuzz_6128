@@ -12,6 +12,7 @@ public class OperateOnly extends LinearOpMode {
 
         while (opModeIsActive()) {
             operate.update();
+            operate.reconfigure();
         }
     }
 }
