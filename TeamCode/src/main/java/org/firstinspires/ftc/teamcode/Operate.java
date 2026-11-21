@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -14,12 +15,12 @@ import java.util.List;
 
 public class Operate {
 
-    public static double pollenSpeed = 2350;
-    public static double nectarSpeed = 3550;
-    public static double kF;
-    public static double kP;
-    public static double kI;
-    public static double kD;
+    public static double pollenSpeed = 1250;
+    public static double nectarSpeed = 1700;
+    public static double kF = 19;
+    public static double kP = 20;
+    public static double kI = 0;
+    public static double kD = 0;
 
     public static double tolerance = 100;
 
@@ -44,9 +45,7 @@ public class Operate {
         this.intake.setDirection(DcMotorSimple.Direction.REVERSE);
         this.output.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        for (DcMotorEx s : shooters) {
-            s.setVelocityPIDFCoefficients(20, 0, 0, 0);
-        }
+        reconfigure();
     }
 
     public void update() {
@@ -106,7 +105,15 @@ public class Operate {
         OFF;
     }
 
+    public void reconfigure() {
+        for (DcMotorEx s : shooters) {
+            s.setVelocityPIDFCoefficients(kP, kI, kD, kF);
+            s.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
     public void shoot(Mode mode) {
+        currentMode = mode;
         final double target;
         switch (mode) {
             case POLLEN: target = pollenSpeed; break;
@@ -126,6 +133,8 @@ public class Operate {
         p.put("shooter 0", shooters.get(0).getVelocity());
         p.put("shooter 1", shooters.get(1).getVelocity());
         p.put("target", target);
+        p.put("ready", readyToShoot());
+
         p.put("outputPower", output.getPower());
         p.put("intakePower", intake.getPower());
         FtcDashboard.getInstance().sendTelemetryPacket(p);
